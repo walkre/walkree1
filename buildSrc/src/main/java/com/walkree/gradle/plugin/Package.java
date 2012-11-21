@@ -1,6 +1,7 @@
 package com.walkree.gradle.plugin;
 
 import java.io.File;
+import java.lang.Iterable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,23 +17,43 @@ import com.walkree.gradle.plugin.cpp.CppLibraryTarget;
 public class Package {
   private static final Logger LOGGER = LoggerFactory.getLogger(Package.class);
   private Project project;
+  private BuildSystem buildSystem;
   private File buildFile;
   private String packageRootDir;
+  private String name;
   private Map<String, Target> targetMap;
 
-  public Package(Project project, File buildFile) {
+  public Package(Project project, BuildSystem buildSystem, File buildFile) {
     this.project = project;
+    this.buildSystem = buildSystem;
     this.buildFile = buildFile;
-    this.packageRootDir = buildFile.getParentFile().getPath();
-    this.targetMap = new HashMap<String, Target>();
+    packageRootDir = buildFile.getParentFile().getAbsolutePath();
+    name = project.relativePath(packageRootDir);
+    targetMap = new HashMap<String, Target>();
+  }
+
+  public Target findTarget(String targetName) {
+    return targetMap.get(targetName);
   }
 
   public Project getProject() {
     return project;
   }
 
+  public BuildSystem getBuildSystem() {
+    return buildSystem;
+  }
+
   public String getPackageRootDir() {
     return packageRootDir;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public Iterable<Target> getTargets() {
+    return targetMap.values();
   }
 
   public void addTarget(Target target, Closure closure) {
@@ -45,8 +66,17 @@ public class Package {
     if (targetMap.containsKey(name)) {
       LOGGER.warn("Duplicted name '{}' in package '{}'\n", name, getPackageRootDir());
     }
-    target.configure();
     targetMap.put(name, target);
+  }
+
+  public void configure() {
+    for (Target target : targetMap.values()) {
+      target.configure();
+    }
+  }
+
+  public String toString() {
+    return getName();
   }
 
   /*
