@@ -10,9 +10,11 @@ import org.gradle.api.file.ConfigurableFileTree;
 import org.gradle.api.tasks.Copy;
 import org.gradle.plugins.binaries.model.Library;
 import org.gradle.plugins.cpp.CppCompile;
-import org.gradle.plugins.cpp.gpp.GppLibraryCompileSpec;
+
+import groovy.lang.Closure;
 
 import com.walkree.gradle.plugin.Package;
+import com.walkree.gradle.plugin.cpp.clang.ClangLibraryCompileSpec;
 
 public class CppLibraryTarget extends CppTarget {
   private static NamedDomainObjectContainer libraries;
@@ -41,14 +43,13 @@ public class CppLibraryTarget extends CppTarget {
   public void configure() {
     Task task = null;
     if (getSources() != null && getSources().length > 0) {
-      CppCompile compileTask = createCompileTask();
+      CppCompile compileTask = createCompileTask();      
       Library lib = (Library) libraries.create(getName());
       this.library = lib;
       lib.getSourceSets().add(createCppSourceSet());
-      GppLibraryCompileSpec spec = (GppLibraryCompileSpec) lib.getSpec();
+      ClangLibraryCompileSpec spec = (ClangLibraryCompileSpec) lib.getSpec();
       setCompileSpec(spec);
-      spec.configure(compileTask);
-      setIncludeRoots(spec);
+      spec.configure(compileTask);      
       task = compileTask;
     }
     if (getExports() != null && getExports().length > 0) {

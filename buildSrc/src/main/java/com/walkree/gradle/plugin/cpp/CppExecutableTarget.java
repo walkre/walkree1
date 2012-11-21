@@ -4,9 +4,9 @@ import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Task;
 import org.gradle.plugins.binaries.model.Executable;
 import org.gradle.plugins.cpp.CppCompile;
-import org.gradle.plugins.cpp.gpp.GppCompileSpec;
 
 import com.walkree.gradle.plugin.Package;
+import com.walkree.gradle.plugin.cpp.clang.ClangCompileSpec;
 
 public class CppExecutableTarget extends CppTarget {
   private static NamedDomainObjectContainer executables;
@@ -23,14 +23,16 @@ public class CppExecutableTarget extends CppTarget {
 
   @Override
   public void configure() {
-    CppCompile task = createCompileTask();
+    if (getSources() == null || getSources().length == 0) {
+      throw new RuntimeException(String.format("Empty target: '%s'", this));
+    }
+    CppCompile task = createCompileTask();    
     Executable exe = (Executable) executables.create(getName());
     this.executable = exe;
     exe.getSourceSets().add(createCppSourceSet());
-    GppCompileSpec spec = (GppCompileSpec) exe.getSpec();
-    setCompileSpec(spec);
-    spec.configure(task);
-    setIncludeRoots(spec);
+    ClangCompileSpec spec = (ClangCompileSpec) exe.getSpec();
+    setCompileSpec(spec);    
+    spec.configure(task);    
     this.task = task;
   }  
 

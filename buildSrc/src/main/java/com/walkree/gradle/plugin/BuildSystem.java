@@ -53,7 +53,6 @@ public class BuildSystem {
       }
     });
     for (File file: buildFiles.getFiles()) {
-      System.out.println(file);
       Package pkg = new Package(project, this, file);
       Map<String, Object> options = new HashMap<String, Object>();      
       options.put("from", file);

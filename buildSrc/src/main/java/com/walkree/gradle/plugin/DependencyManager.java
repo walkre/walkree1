@@ -27,7 +27,6 @@ public class DependencyManager {
       depMap.put(target, depList);
     }
     if (depTarget != null) {
-      System.out.println(target);
       depList.add(depTarget);      
     }
   }
