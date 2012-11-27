@@ -126,7 +126,7 @@ public class Environment {
 
     for (File buildFile : buildFiles.getFiles()) {
       Package pkg = new Package(this, buildFile);
-      registerPackage(pkg);
+      addPackage(pkg);
 
       Map<String, Object> options = new HashMap<String, Object>();
       options.put("from", buildFile);
@@ -144,8 +144,8 @@ public class Environment {
     }
   }
 
-  /* Register a package with the environment. */
-  private void registerPackage(Package pkg) {
+  /* Add a package to the environment. */
+  private void addPackage(Package pkg) {
     mPackages.put(pkg.getDescriptor(), pkg);
   }
 }
