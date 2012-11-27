@@ -3,6 +3,7 @@ package com.walkree.gradle.plugin;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import groovy.lang.Closure;
 
@@ -66,7 +67,9 @@ public class Environment {
    * @return              The target if found, null otherwise.
    */
   public Target findTarget(String descriptor) {
-    String[] desc = descriptor.split(Constant.TARGET_SEPARATOR);
+    // Since String.split accepts a regular expression, we need to quote the
+    // separator in case it is a special character (e.g. '*').
+    String[] desc = descriptor.split(Pattern.quote(Constant.TARGET_SEPARATOR));
     if (desc.length != 2) {
       return null;
     }
