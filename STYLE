@@ -35,4 +35,3 @@ each static class field. Constants start with 'k's.
 10) Don't make a method public unless it's necessary.
 
 11) Avoid vertical space as much as possible.
-

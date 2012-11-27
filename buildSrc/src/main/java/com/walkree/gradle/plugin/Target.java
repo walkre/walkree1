@@ -90,7 +90,7 @@ public abstract class Target {
 
   /**
    * Return true if the given dependee can be depended upon by this target,
-   * false otherwise. 
+   * false otherwise.
    * @param   dependee  The given dependee.
    * @return  True if the given dependee can be depended upon, false otherwise.
    */
@@ -150,7 +150,7 @@ public abstract class Target {
   /**
    * Configure the dependencies of this target. This function is invoked through
    * the build file specified by the user.
-   * @param   values  The list of {@link String} dependency values. 
+   * @param   values  The list of {@link String} dependency values.
    */
   public void setDependencies(String[] values) {
     for (String value : values) {
@@ -162,7 +162,7 @@ public abstract class Target {
   /**
    * Configure the sources of this target. This function is invoked through the
    * build file specified by the user.
-   * @param   values  The list of {@link String} source values. 
+   * @param   values  The list of {@link String} source values.
    */
   public void setSources(String[] values) {
     for (String value : values) {

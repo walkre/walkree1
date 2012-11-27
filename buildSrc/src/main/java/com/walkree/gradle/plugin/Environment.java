@@ -127,7 +127,7 @@ public class Environment {
     for (File buildFile : buildFiles.getFiles()) {
       Package pkg = new Package(this, buildFile);
       registerPackage(pkg);
-   
+
       Map<String, Object> options = new HashMap<String, Object>();
       options.put("from", buildFile);
       options.put("to", pkg);
