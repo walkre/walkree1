@@ -1,2 +1,5 @@
 # Do not ignore .gitignore itself.
 !.gitignore
+
+# Ignore gradle outputs.
+.gradle/
