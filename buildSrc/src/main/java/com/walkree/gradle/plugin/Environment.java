@@ -45,7 +45,7 @@ public class Environment {
 
   /**
    * Configure the building environment. This must be called in order to setup
-   * the building environment.
+   * the building environment. This is the main entry of the plugin.
    */
   public void configure() {
     loadPackages();
@@ -108,6 +108,13 @@ public class Environment {
    */
   public File getRootDirectory() {
     return mProject.getRootDir();
+  }
+
+  /**
+   * Exit the building.
+   */
+  public void exit() {
+    System.exit(0);
   }
 
   /**
