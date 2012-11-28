@@ -26,11 +26,10 @@ public class Environment {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(Environment.class);
 
-  /* The Gradle project instance. */
+  // The Gradle project instance.
   private Project mProject;
 
-  /* A package descriptor index. It records all the packages in the
-   * environment. */
+  // A package descriptor index. It records all the packages in the environment.
   private Map<String, Package> mPackages;
 
   /**
@@ -83,6 +82,15 @@ public class Environment {
   }
 
   /**
+   * Create a Gradle default task with the given name.
+   * @param   name  The name of the task.
+   * @return        The newly created gradle default task.
+   */
+  public Task createTask(String name) {
+    return mProject.task(name);
+  }
+
+  /**
    * Apply a Groovy {@link Closure} on a given object.
    * @param   object  The given object.
    * @param   closure The Groovy closure to be applied.
@@ -90,15 +98,6 @@ public class Environment {
    */
   public Object applyClosure(Object object, Closure closure) {
     return mProject.configure(object, closure);
-  }
-
-  /**
-   * Create a Gradle default task with the given name.
-   * @param   name  The given task name.
-   * @return        The newly created gradle default task.
-   */
-  public Task createTask(String name) {
-    return mProject.task(name);
   }
 
   /**
@@ -124,7 +123,7 @@ public class Environment {
     System.exit(1);
   }
 
-  /* Load all the necessary packages. */
+  // Load all the necessary packages.
   private void loadPackages() {
     // TODO(jieyu): Selectively load build files based on the target.
     FileCollection buildFiles = mProject.fileTree(getRootDirectory());
@@ -147,14 +146,14 @@ public class Environment {
     }
   }
 
-  /* Configure all the loaded packages. */
+  // Configure all the loaded packages.
   private void configurePackages() {
     for (Package pkg : mPackages.values()) {
       pkg.configure();
     }
   }
 
-  /* Add a package to the environment. */
+  // Add a package to the environment.
   private void addPackage(Package pkg) {
     mPackages.put(pkg.getDescriptor(), pkg);
   }

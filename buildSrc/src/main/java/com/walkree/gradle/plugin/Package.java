@@ -23,16 +23,16 @@ import com.walkree.gradle.plugin.java.ThirdPartyJavaLibraryTarget;
 public class Package {
   private static final Logger LOGGER = LoggerFactory.getLogger(Package.class);
 
-  /* The building environment in which the package resides. */
+  // The building environment in which the package resides.
   private Environment mEnvironment;
 
-  /* The build file that describes the package. */
+  // The build file that describes the package.
   private File mBuildFile;
 
-  /* The home directory of the package. */
+  // The home directory of the package.
   private File mHomeDirectory;
 
-  /* A target descriptor index. It records all the targets in the package. */
+  // A target descriptor index. It records all the targets in the package.
   private Map<String, Target> mTargets;
 
   /**
@@ -83,7 +83,7 @@ public class Package {
     return mEnvironment;
   }
 
-  /* Add a target to the package. */
+  // Add a target to the package.
   private void addTarget(Target target) {
     mTargets.put(target.getDescriptor(), target);
   }

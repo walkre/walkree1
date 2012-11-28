@@ -6,13 +6,13 @@ import com.walkree.gradle.plugin.Target;
  * This class represents a dependency in a target.
  */
 public class Dependency {
-  /* The target to which this dependency belongs. */
+  // The target to which this dependency belongs.
   private Target mTarget;
 
-  /* The value specified by the user. */
+  // The value specified by the user.
   private String mValue;
 
-  /* The dependee target. */
+  // The dependee target.
   private Target mDependee;
 
   /**

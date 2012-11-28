@@ -6,10 +6,10 @@ import com.walkree.gradle.plugin.Target;
  * This class represents a source file in a target.
  */
 public class Source {
-  /* The target to which the source belongs. */
+  // The target to which the source belongs.
   private Target mTarget;
 
-  /* The value specified by the user. */
+  // The value specified by the user.
   private String mValue;
 
   /**

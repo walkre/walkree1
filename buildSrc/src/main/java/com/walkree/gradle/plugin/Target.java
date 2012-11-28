@@ -17,28 +17,28 @@ import com.walkree.gradle.plugin.Source;
  * This class represents a target. A target can be configured in the build file
  * specified by the user.
  */
-public abstract class Target {
+public class Target {
   private static final Logger LOGGER = LoggerFactory.getLogger(Target.class);
 
-  /* The package in which the target resides. */
+  // The package in which the target resides.
   private Package mPackage;
 
-  /* The name of the target. */
+  // The name of the target.
   private String mName;
 
-  /* The set of dependencies declared by the target. */
+  // The set of dependencies declared by the target.
   private Collection<Dependency> mDependencies;
 
-  /* The set of sources declared by the target. */
+  // The set of sources declared by the target.
   private Collection<Source> mSources;
 
-  /* The set of internal jobs in the target. */
+  // The set of internal jobs in the target.
   private Collection<Job> mJobs;
 
-  /* The phoney job on which all the internal jobs depend. */
+  // The phoney job on which all the internal jobs depend.
   private Job mStarter;
 
-  /* The phoney job that depends on all the internal jobs. */
+  // The phoney job that depends on all the internal jobs.
   private Job mFinisher;
 
   /**
@@ -60,9 +60,9 @@ public abstract class Target {
   }
 
   /**
-   * An abstract initialization function which all subclasses must implement.
+   * An initialization function which all subclasses must implement.
    */
-  public abstract void initialize();
+  public void initialize() {}
 
   /**
    * Configure the target. This must be called in order to setup the target.
@@ -124,7 +124,7 @@ public abstract class Target {
     mSources.add(source);
   }
 
-  /* Resolve all dependencies for this target. */
+  // Resolve all dependencies for this target.
   private void resolveDependencies() {
     for (Dependency dep : mDependencies) {
       String dependeeDesc= dep.getDependeeDescriptor();
@@ -142,7 +142,7 @@ public abstract class Target {
     }
   }
 
-  /* Set the target to be dependent on the given dependee. */
+  // Set the target to be dependent on the given dependee.
   private void dependsOn(Target dependee) {
     mStarter.dependsOn(dependee.mFinisher);
   }

@@ -16,16 +16,16 @@ import com.walkree.gradle.plugin.Target;
  * the other jobs are finished.
  */
 public class Job {
-  /* The target to which this job belongs. */
+  // The target to which this job belongs.
   private Target mTarget;
 
-  /* The name of the job. */
+  // The name of the job.
   private String mName;
 
-  /* The set of dependents of this job. */
+  // The set of dependents of this job.
   private Collection<Job> mDependents;
 
-  /* The Gradle task associated with this job. */
+  // The Gradle task associated with this job.
   private Task mTask;
 
   /**
@@ -54,7 +54,7 @@ public class Job {
    * @return  The newly created Gradle task.
    */
   public Task createTask() {
-    return getEnvironment().createTask(getDescriptor());
+    return getEnvironment().createTask(getTaskName());
   }
 
   /**
@@ -80,5 +80,15 @@ public class Job {
    */
   public String getDescriptor() {
     return mTarget.getDescriptor() + Constant.JOB_SEPARATOR + mName;
+  }
+
+  /**
+   * Return the name of the Gradle task that is associated with this job.
+   * @return  The name of the task.
+   */
+  protected String getTaskName() {
+    // TODO(jieyu): Currently, we cannot use colon in the task name as Gradle
+    // will treat it as a project:task separator.
+    return getDescriptor().replaceAll(":", "~");
   }
 }
