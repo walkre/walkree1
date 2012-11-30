@@ -130,11 +130,16 @@ public class Target {
       String dependeeDesc= dep.getDependeeDescriptor();
       Target dependee = getEnvironment().findTarget(dependeeDesc);
 
-      if (dependee == null || !isValidDependee(dependee)) {
-        LOGGER.error(
-            "Failed to resolve a dependency: '{}' -> '{}'.",
-            getDescriptor(), dependeeDesc);
-        getEnvironment().abort();
+      if (dependee == null) {
+        getEnvironment().fatal(LOGGER,
+            "Failed to resolve a dependency: '{}' -> '{}'. " +
+            "Cannot find dependee '{}' does not exist.",
+            getDescriptor(), dependeeDesc, dependeeDesc);
+      } else if (!isValidDependee(dependee)) {
+        getEnvironment().fatal(LOGGER,
+            "Failed to resolve a dependency: '{}' -> '{}'. " +
+            "Dependee '{}' is not a valid dependee.",
+            getDescriptor(), dependeeDesc, dependeeDesc);
       } else {
         dep.setDependee(dependee);
         dependsOn(dependee);

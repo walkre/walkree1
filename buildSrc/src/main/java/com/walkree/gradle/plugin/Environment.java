@@ -14,6 +14,9 @@ import org.gradle.api.specs.Spec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 import com.walkree.gradle.plugin.Constant;
 import com.walkree.gradle.plugin.Package;
@@ -110,17 +113,20 @@ public class Environment {
   }
 
   /**
-   * Exit the building.
-   */
-  public void exit() {
-    System.exit(0);
-  }
-
-  /**
    * Abort the building.
+   * @param   logger    The logger of the class that calls this function.
+   * @param   format    The format string passed to the logger.
+   * @param   arguments The arguments passed to the logger.
    */
-  public void abort() {
-    System.exit(1);
+  public void fatal(Logger logger, String format, Object... arguments) {
+    // Construct the fatal message body.
+    String msg = MessageFormatter.arrayFormat(format, arguments).getMessage();
+
+    // Log the fatal message with using the given logger.
+    Marker fatal = MarkerFactory.getMarker("FATAL");
+    logger.error(fatal, msg);
+
+    throw new RuntimeException("FATAL: " + msg);
   }
 
   // Load all the necessary packages.
