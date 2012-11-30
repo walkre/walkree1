@@ -1,0 +1,37 @@
+Some basic rules for Java:
+
+In general, we follow Android Java style rules.
+http://source.android.com/source/code-style.html
+
+1) Use full names for class fields when possible.
+
+2) Use full names for class methods.
+
+3) Local variables can be named using abbriv.
+
+4) Use a leading 'm' for each class field, and use a leading 'g' for
+each static class field. Constants start with 'k's.
+
+5) Class definition follows the ordering below:
+   fields
+   static fields
+   constructors
+   static methods
+   methods
+
+   In each category, always declare the simple functions (e.g.
+   getter/setter) later.
+
+6) Avoid using 'this' whenever possible.
+
+7) Use the following format for TODOs:
+   // TODO(your name): Content.
+
+8) All comments start with //.
+
+9) Always use full sentences for comments.
+   // This is a comment.
+
+10) Don't make a method public unless it's necessary.
+
+11) Avoid vertical space as much as possible.
