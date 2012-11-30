@@ -4,17 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.walkree.gradle.plugin.Package;
-import com.walkree.gradle.plugin.Target;
+import com.walkree.gradle.plugin.java.JavaLibraryTarget;
 
 /**
  * This class represents Java executables.
  */
-public class JavaExecutableTarget extends Target {
+public class JavaExecutableTarget extends JavaLibraryTarget {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(JavaExecutableTarget.class);
 
   /**
-   * Create a java executable target in a given package.
+   * Create a Java executable target in a given package.
    * @param   pkg   The given package.
    * @param   name  The name of the target.
    */
@@ -24,7 +24,6 @@ public class JavaExecutableTarget extends Target {
 
   @Override
   public void initialize() {
-    // TODO(jieyu): Fill this function.
-    LOGGER.info("JavaExecutableTarget.initialize()");
+    super.initialize();
   }
 }

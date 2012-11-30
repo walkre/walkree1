@@ -94,6 +94,19 @@ public class Environment {
   }
 
   /**
+   * Create a Gradle task with the given name and type.
+   * @param   name  The name of the task.
+   * @param   type  The class of the task to be created.
+   * @return        The newly created gradle task.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends Task> T createTask(String name, Class<T> type) {
+    Map<String, Object> args = new HashMap<String, Object>();
+    args.put("type", type);
+    return (T)mProject.task(args, name);
+  }
+
+  /**
    * Apply a Groovy {@link Closure} on a given object.
    * @param   object  The given object.
    * @param   closure The Groovy closure to be applied.
@@ -114,6 +127,15 @@ public class Environment {
 
   /**
    * Abort the building.
+   * @param   format    The format string passed to the logger.
+   * @param   arguments The arguments passed to the logger.
+   */
+  public void fatal(String format, Object... arguments) {
+    fatal(LOGGER, format, arguments);
+  }
+
+  /**
+   * Abort the building.
    * @param   logger    The logger of the class that calls this function.
    * @param   format    The format string passed to the logger.
    * @param   arguments The arguments passed to the logger.
@@ -127,6 +149,35 @@ public class Environment {
     logger.error(fatal, msg);
 
     throw new RuntimeException("FATAL: " + msg);
+  }
+
+  /**
+   * Resolves a file path relative to the project root directory.
+   * @param   path    Any path accepted by file(path) in {@link Project}.
+   * @return          The resolved file. Never returns null.
+   */
+  public File file(Object path) {
+    return mProject.file(path);
+  }
+
+  /**
+   * Returns a {@link FileCollection} instance containing the given files.
+   * @param   paths   Any paths accepted by files(paths) in {@link Project}.
+   * @return          The file collection. Never returns null.
+   */
+  public FileCollection files(Object... paths) {
+    return mProject.files(paths);
+  }
+
+  /**
+   * Return a {@link FileCollection} instance containing all files under the
+   * given base directory.
+   * @param   baseDirectory The base directory of the file tree. Evaluated as
+   *                        for file(baseDirectory).
+   * @return                The file collection. Never returns null.
+   */
+  public FileCollection fileTree(Object baseDirectory) {
+    return mProject.fileTree(baseDirectory);
   }
 
   // Load all the necessary packages.

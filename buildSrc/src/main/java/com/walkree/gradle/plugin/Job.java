@@ -44,12 +44,15 @@ public class Job {
    * created.
    */
   public Job initialize() {
+    if (validate() == false) {
+      getEnvironment().fatal("Job '{}' is not a valid job.", getDescriptor());
+    }
     mTask = createTask();
     return this;
   }
 
   /**
-   * Create a Gradle task that is associated with this job. All subclasses must
+   * Create a Gradle task that is associated with this job. Subclasses can
    * override this function to create job specific tasks.
    * @return  The newly created Gradle task.
    */
@@ -58,10 +61,40 @@ public class Job {
   }
 
   /**
+   * Check the parameters of the job, and return true if the job is valid.
+   * Subclasses can override this function to provide job specific check.
+   * @return  True if the job is valid, false otherwise.
+   */
+  public boolean validate() {
+    return true;
+  }
+
+  /**
+   * Return true if the job is properly initialized.
+   * @return  True if the job is initialized, false otherwise.
+   */
+  public boolean isInitialized() {
+    return mTask != null;
+  }
+
+  /**
    * Set the job to be dependent on the given dependee job.
    * @param   dependee  The given dependee job.
    */
   public void dependsOn(Job dependee) {
+    // Make sure that both jobs are properly initialized.
+    if (!isInitialized()) {
+      getEnvironment().fatal(
+          "Job '{}' is not initialized. Please invoke Job.initialize().",
+          getDescriptor());
+    }
+
+    if (!dependee.isInitialized()) {
+      getEnvironment().fatal(
+          "Job '{}' is not initialized. Please invoke Job.initialize().",
+          dependee.getDescriptor());
+    }
+
     dependee.mDependents.add(this);
     mTask.dependsOn(dependee.mTask);
   }

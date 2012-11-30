@@ -1,7 +1,10 @@
 package com.walkree.gradle.plugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.gradle.api.file.FileCollection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,11 +76,33 @@ public class Target {
   }
 
   /**
+   * Return a {@link FileCollection} instance that contains all the source files
+   * declared in the target.
+   * @return  The FileCollection instance.
+   */
+  public FileCollection getSourceFiles() {
+    Collection<File> files = new ArrayList<File>();
+    for (Source src : mSources) {
+      files.add(src.getFile());
+    }
+
+    return getEnvironment().files(files);
+  }
+
+  /**
    * Return the canonicalized {@link String} descriptor of the target.
    * @return  The canonicalized descriptor.
    */
   public String getDescriptor() {
     return mPackage.getDescriptor() + Constant.TARGET_SEPARATOR + mName;
+  }
+
+  /**
+   * Return the home directory of the package in which this target resides.
+   * @return  The home directory of the package in which this target resides.
+   */
+  public File getHomeDirectory() {
+    return mPackage.getHomeDirectory();
   }
 
   /**
@@ -131,12 +156,12 @@ public class Target {
       Target dependee = getEnvironment().findTarget(dependeeDesc);
 
       if (dependee == null) {
-        getEnvironment().fatal(LOGGER,
+        getEnvironment().fatal(
             "Failed to resolve a dependency: '{}' -> '{}'. " +
             "Cannot find dependee '{}' does not exist.",
             getDescriptor(), dependeeDesc, dependeeDesc);
       } else if (!isValidDependee(dependee)) {
-        getEnvironment().fatal(LOGGER,
+        getEnvironment().fatal(
             "Failed to resolve a dependency: '{}' -> '{}'. " +
             "Dependee '{}' is not a valid dependee.",
             getDescriptor(), dependeeDesc, dependeeDesc);
