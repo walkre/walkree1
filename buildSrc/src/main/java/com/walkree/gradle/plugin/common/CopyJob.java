@@ -1,4 +1,4 @@
-package com.walkree.gradle.plugin.java;
+package com.walkree.gradle.plugin.common;
 
 import java.io.File;
 
@@ -13,37 +13,36 @@ import com.walkree.gradle.plugin.Job;
 import com.walkree.gradle.plugin.Target;
 
 /**
- * This class represents a job that installs Java jar files.
+ * This class represents a job that copies files.
  */
-public class JavaInstallJarJob extends Job {
-  private static final Logger LOGGER =
-      LoggerFactory.getLogger(JavaInstallJarJob.class);
+public class CopyJob extends Job {
+  private static final Logger LOGGER = LoggerFactory.getLogger(CopyJob.class);
 
-  // The set of jar files to be installed.
-  private FileCollection mJarFiles;
+  // The files to be copied.
+  private FileCollection mFrom;
 
   // The destination directory.
   private File mDestinationDirectory;
 
   /**
-   * Create a Java install jar job in a given target with the given name.
+   * Create a copy job in a given target with the given name.
    * @param   target  The given target.
    * @param   name    The name of the job.
    */
-  public JavaInstallJarJob(Target target, String name) {
+  public CopyJob(Target target, String name) {
     super(target, name);
   }
 
   @Override
-  public JavaInstallJarJob initialize() {
-    return (JavaInstallJarJob)super.initialize();
+  public CopyJob initialize() {
+    return (CopyJob)super.initialize();
   }
 
   @Override
   public Task createTask() {
     Copy task = getEnvironment().createTask(getTaskName(), Copy.class);
 
-    task.from(mJarFiles);
+    task.from(mFrom);
     task.into(mDestinationDirectory);
 
     return task;
@@ -53,8 +52,8 @@ public class JavaInstallJarJob extends Job {
   public boolean validate() {
     boolean valid = true;
 
-    if (mJarFiles == null || mJarFiles.isEmpty()) {
-      LOGGER.error("Jar files are not specified.");
+    if (mFrom == null || mFrom.isEmpty()) {
+      LOGGER.error("Files to be copied are not specified.");
       valid = false;
     }
 
@@ -67,12 +66,12 @@ public class JavaInstallJarJob extends Job {
   }
 
   /**
-   * Set the set of jar files to be installed.
-   * @param   jarFiles  The set of jar files to be installed.
-   * @return            This object.
+   * Set the files to be copied.
+   * @param   from  The files to be copied.
+   * @return        This object.
    */
-  public JavaInstallJarJob setJarFiles(FileCollection jarFiles) {
-    mJarFiles = jarFiles;
+  public CopyJob setFrom(FileCollection from) {
+    mFrom = from;
     return this;
   }
 
@@ -81,7 +80,7 @@ public class JavaInstallJarJob extends Job {
    * @param   directory The destination directory.
    * @return            This object.
    */
-  public JavaInstallJarJob setDestinationDirectory(File directory) {
+  public CopyJob setDestinationDirectory(File directory) {
     mDestinationDirectory = directory;
     return this;
   }
