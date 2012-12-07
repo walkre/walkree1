@@ -94,6 +94,19 @@ public class Environment {
   }
 
   /**
+   * Create a Gradle task with the given name and type.
+   * @param   name  The name of the task.
+   * @param   type  The class of the task to be created.
+   * @return        The newly created gradle task.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends Task> T createTask(String name, Class<T> type) {
+    Map<String, Object> args = new HashMap<String, Object>();
+    args.put("type", type);
+    return (T)mProject.task(args, name);
+  }
+
+  /**
    * Apply a Groovy {@link Closure} on a given object.
    * @param   object  The given object.
    * @param   closure The Groovy closure to be applied.
@@ -113,20 +126,51 @@ public class Environment {
   }
 
   /**
-   * Abort the building.
-   * @param   logger    The logger of the class that calls this function.
+   * Abort the building. We throw a RuntimeException at the end of this function
+   * so that the build system can exit gracefully with pretty prints. We use the
+   * logger for the Environment class to log the fatal message, while other
+   * messages are logged using the per class loggers.
    * @param   format    The format string passed to the logger.
    * @param   arguments The arguments passed to the logger.
    */
-  public void fatal(Logger logger, String format, Object... arguments) {
+  public void fatal(String format, Object... arguments) {
     // Construct the fatal message body.
     String msg = MessageFormatter.arrayFormat(format, arguments).getMessage();
 
-    // Log the fatal message with using the given logger.
+    // Log the fatal message using the LOGGER for this class.
     Marker fatal = MarkerFactory.getMarker("FATAL");
-    logger.error(fatal, msg);
+    LOGGER.error(fatal, msg);
 
     throw new RuntimeException("FATAL: " + msg);
+  }
+
+  /**
+   * Resolves a file path relative to the project root directory.
+   * @param   path    Any path accepted by file(path) in {@link Project}.
+   * @return          The resolved file. Never returns null.
+   */
+  public File file(Object path) {
+    return mProject.file(path);
+  }
+
+  /**
+   * Returns a {@link FileCollection} instance containing the given files.
+   * @param   paths   Any paths accepted by files(paths) in {@link Project}.
+   * @return          The file collection. Never returns null.
+   */
+  public FileCollection files(Object... paths) {
+    return mProject.files(paths);
+  }
+
+  /**
+   * Return a {@link FileCollection} instance containing all files under the
+   * given base directory.
+   * @param   baseDirectory The base directory of the file tree. Evaluated as
+   *                        for file(baseDirectory).
+   * @return                The file collection. Never returns null.
+   */
+  public FileCollection fileTree(Object baseDirectory) {
+    return mProject.fileTree(baseDirectory);
   }
 
   // Load all the necessary packages.

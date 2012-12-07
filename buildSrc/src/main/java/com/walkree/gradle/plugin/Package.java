@@ -63,7 +63,8 @@ public class Package {
   public String getDescriptor() {
     String homeDirPath = mHomeDirectory.getPath();
     String rootDirPath = getEnvironment().getRootDirectory().getPath();
-    return Constant.PROJECT_ROOT_SYMBOL + homeDirPath.substring(rootDirPath.length() + 1);
+    return Constant.PROJECT_ROOT_SYMBOL +
+        homeDirPath.substring(rootDirPath.length() + 1);
   }
 
   /**
@@ -73,6 +74,14 @@ public class Package {
    */
   public Target findTarget(String descriptor) {
     return mTargets.get(descriptor);
+  }
+
+  /**
+   * Return the home directory of the package.
+   * @return  The home directory of the package.
+   */
+  public File getHomeDirectory() {
+    return mHomeDirectory;
   }
 
   /**
