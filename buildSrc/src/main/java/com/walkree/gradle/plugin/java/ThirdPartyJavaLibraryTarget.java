@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.walkree.gradle.plugin.Constant;
 import com.walkree.gradle.plugin.Package;
 import com.walkree.gradle.plugin.Target;
-import com.walkree.gradle.plugin.java.JavaInstallJarJob;
+import com.walkree.gradle.plugin.common.CopyJob;
 
 /**
  * This class represents third party Java libraries.
@@ -37,13 +37,13 @@ public class ThirdPartyJavaLibraryTarget extends Target {
 
   @Override
   public void initialize() {
-    JavaInstallJarJob install =
-        new JavaInstallJarJob(this, "JavaInstallJar")
-            .setJarFiles(getJarFiles())
+    CopyJob copyJars =
+        new CopyJob(this, "CopyJars")
+            .setFrom(getJarFiles())
             .setDestinationDirectory(getDestinationDirectory())
             .initialize();
 
-    addJob(install);
+    addJob(copyJars);
   }
 
   // Return the jar files that needs to be installed.
