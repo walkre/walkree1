@@ -90,7 +90,7 @@ public class Environment {
    * @return        The newly created gradle default task.
    */
   public Task createTask(String name) {
-    return mProject.task(name);
+    return mProject.getTasks().add(name);
   }
 
   /**
@@ -99,11 +99,8 @@ public class Environment {
    * @param   type  The class of the task to be created.
    * @return        The newly created gradle task.
    */
-  @SuppressWarnings("unchecked")
   public <T extends Task> T createTask(String name, Class<T> type) {
-    Map<String, Object> args = new HashMap<String, Object>();
-    args.put("type", type);
-    return (T)mProject.task(args, name);
+    return mProject.getTasks().add(name, type);
   }
 
   /**
