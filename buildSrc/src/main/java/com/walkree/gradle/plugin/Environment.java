@@ -126,27 +126,20 @@ public class Environment {
   }
 
   /**
-   * Abort the building.
+   * Abort the building. We throw a RuntimeException at the end of this function
+   * so that the build system can exit gracefully with pretty prints. We use the
+   * logger for the Environment class to log the fatal message, while other
+   * messages are logged using the per class loggers.
    * @param   format    The format string passed to the logger.
    * @param   arguments The arguments passed to the logger.
    */
   public void fatal(String format, Object... arguments) {
-    fatal(LOGGER, format, arguments);
-  }
-
-  /**
-   * Abort the building.
-   * @param   logger    The logger of the class that calls this function.
-   * @param   format    The format string passed to the logger.
-   * @param   arguments The arguments passed to the logger.
-   */
-  public void fatal(Logger logger, String format, Object... arguments) {
     // Construct the fatal message body.
     String msg = MessageFormatter.arrayFormat(format, arguments).getMessage();
 
-    // Log the fatal message with using the given logger.
+    // Log the fatal message using the LOGGER for this class.
     Marker fatal = MarkerFactory.getMarker("FATAL");
-    logger.error(fatal, msg);
+    LOGGER.error(fatal, msg);
 
     throw new RuntimeException("FATAL: " + msg);
   }

@@ -66,6 +66,10 @@ public class Job {
    * @return  True if the job is valid, false otherwise.
    */
   public boolean validate() {
+    // TODO(jieyu): It would be better to make this function abstract so that
+    // subclasses are forced to implement this function. We will leave it for
+    // now as we prefer this class to be concrete so that we don't need to
+    // create a DefaultJob class.
     return true;
   }
 
